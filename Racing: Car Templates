@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Racing: Car Templates
 // @namespace    heartflower.torn.com
-// @version      1.0
+// @version      1.1
 // @description  Highlights cars and upgrades based on templates
 // @author       Heartflower [2626587]
 // @match        https://www.torn.com/loader.php?sid=racing*
@@ -1520,6 +1520,12 @@
 
                                     let enlistCar = li.querySelector('.enlist-car');
                                     enlistCar.style.background = 'rgba(20, 113, 151, 0.15';
+
+                                    // Get the parent ul element
+                                    let parentUl = li.parentNode;
+
+                                    // Append li as first child
+                                    parentUl.insertBefore(li, parentUl.firstChild);
                                 }
                             } else {
                                 li.style.background = '';
@@ -1529,6 +1535,13 @@
                                 if (enlistInfoWrap) {
                                     enlistInfoWrap.style.background = '';
                                 }
+
+                                let enlistCar = li.querySelector('.enlist-car');
+
+                                if (enlistCar) {
+                                    enlistCar.style.background = '';
+                                }
+
                             }
                         });
                     }
