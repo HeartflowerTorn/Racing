@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Racing: Car Templates
 // @namespace    heartflower.torn.com
-// @version      1.1
+// @version      1.2
 // @description  Highlights cars and upgrades based on templates
 // @author       Heartflower [2626587]
 // @match        https://www.torn.com/loader.php?sid=racing*
@@ -365,8 +365,6 @@
                 changeNoteRecogniserButton.onclick = function() {
                     // Get the input element
                     let input = document.querySelector('#carTemplatesContainer input');
-
-                    console.log(input);
 
                     // Get the selected template name
                     let selectedTemplateName = input.value;
@@ -1284,8 +1282,14 @@
                         // Find the track name within the success row element
                         const trackElement = successRow.querySelector('.track');
                         if (trackElement) {
-                            let trackText = trackElement.textContent.trim();
+                            let trackText = trackElement.textContent.trim(); // Need to REDO since OTHER SCRIPT! COME BACK HERE!
                             chosenTrack = trackText.split('(')[0].trim();
+
+                            let raceName = trackElement.querySelector('.hf-race-name');
+                            if (raceName) {
+                                let textContent = raceName.textContent;
+                                chosenTrack = chosenTrack.replace(textContent, '').trim();
+                            }
 
                             possibleTemplates = [];
 
@@ -1321,21 +1325,11 @@
                 let selectMenuStatus = document.querySelector('.ui-selectmenu');
                 let mobileSelectMenu = document.querySelector('#select-racing-track');
 
-                console.log(mobileSelectMenu);
-
                 if (selectMenuStatus) {
                     chosenTrack = selectMenuStatus.textContent.trim();
-
-                    console.log(chosenTrack);
-
                     possibleTemplates = [];
 
-                    console.log(carTemplates);
-
                     for (let template of carTemplates) {
-                        console.log(template);
-                        console.log(template.name);
-
                         if (template.name.includes(chosenTrack)) {
                             possibleTemplates.push(template);
                         }
@@ -1347,7 +1341,6 @@
                 } else if (mobileSelectMenu) {
                     let selectedOption = mobileSelectMenu.options[mobileSelectMenu.selectedIndex];
                     chosenTrack = selectedOption.textContent;
-                    console.log(chosenTrack);
 
                     possibleTemplates = [];
 
@@ -1474,7 +1467,7 @@
                         paragraphContainer.style.fontWeight = 'normal';
 
                         let paragraph = document.createElement('p');
-                        paragraph.textContent = '• ' + suggestedCar + ' (' + noteRecogniser + ')';
+                        paragraph.textContent = '\u2022 ' + suggestedCar + ' (' + noteRecogniser + ')'; // Should fix bullet issue! COME BACK HERE!
                         paragraph.style.alignSelf = 'center';
 
                         paragraphContainer.appendChild(paragraph);
@@ -1617,12 +1610,9 @@
 
                 for (let template of carTemplates) {
                     if (chosenTrack.toLowerCase() === template.name.split(':')[0].trim().toLowerCase()) {
-                        console.log('pushed');
                         possibleTemplates.push(template);
                     }
                 }
-
-                console.log(possibleTemplates);
 
                 setTimeout(function() {
                     highlightSuggestedCar(possibleTemplates, chosenTrack);
@@ -1644,9 +1634,6 @@
 
     // Function to handle the button click event
     function changeTemplateNoteRecogniser(selectedTemplateName, templates, chosenTrack) {
-
-        console.log(selectedTemplateName);
-
         // Find the corresponding template object
         let selectedTemplate = carTemplates.find(template => template.name === selectedTemplateName);
 
