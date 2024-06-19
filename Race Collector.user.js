@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Race Collector
 // @namespace    heartflower.torn.racing
-// @version      1.0
+// @version      1.0.1
 // @description  Extracts racing data
 // @author       Heartflower [2626587]
-// @match        https://www.torn.com/loader.php?sid=racing*
+// @match        https://www.torn.com/page.php?sid=racing*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
 // @grant        none
 // ==/UserScript==
