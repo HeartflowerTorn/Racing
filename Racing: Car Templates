@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Racing: Car Templates
 // @namespace    heartflower.torn.com
-// @version      1.2
+// @version      1.2.1
 // @description  Highlights cars and upgrades based on templates
 // @author       Heartflower [2626587]
-// @match        https://www.torn.com/loader.php?sid=racing*
+// @match        https://www.torn.com/page.php?sid=racing*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
 // ==/UserScript==
 
@@ -1282,7 +1282,7 @@
                         // Find the track name within the success row element
                         const trackElement = successRow.querySelector('.track');
                         if (trackElement) {
-                            let trackText = trackElement.textContent.trim(); // Need to REDO since OTHER SCRIPT! COME BACK HERE!
+                            let trackText = trackElement.textContent.trim();
                             chosenTrack = trackText.split('(')[0].trim();
 
                             let raceName = trackElement.querySelector('.hf-race-name');
@@ -1467,7 +1467,7 @@
                         paragraphContainer.style.fontWeight = 'normal';
 
                         let paragraph = document.createElement('p');
-                        paragraph.textContent = '\u2022 ' + suggestedCar + ' (' + noteRecogniser + ')'; // Should fix bullet issue! COME BACK HERE!
+                        paragraph.textContent = '\u2022 ' + suggestedCar + ' (' + noteRecogniser + ')';
                         paragraph.style.alignSelf = 'center';
 
                         paragraphContainer.appendChild(paragraph);
