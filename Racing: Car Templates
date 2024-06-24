@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Racing: Car Templates
 // @namespace    heartflower.torn.com
-// @version      1.2.1
+// @version      1.2.2
 // @description  Highlights cars and upgrades based on templates
 // @author       Heartflower [2626587]
 // @match        https://www.torn.com/page.php?sid=racing*
+// @match        https://www.torn.com/loader.php?sid=racing*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
 // ==/UserScript==
 
