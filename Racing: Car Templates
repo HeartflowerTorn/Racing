@@ -1,16 +1,32 @@
 // ==UserScript==
 // @name         Racing: Car Templates
 // @namespace    heartflower.torn.com
-// @version      1.2.2
+// @version      1.3
 // @description  Highlights cars and upgrades based on templates
 // @author       Heartflower [2626587]
 // @match        https://www.torn.com/page.php?sid=racing*
 // @match        https://www.torn.com/loader.php?sid=racing*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=torn.com
+// @grant        GM_registerMenuCommand
 // ==/UserScript==
 
 (function() {
     'use strict';
+
+    let settings = 'old';
+
+    let savedSettings = localStorage.getItem('hf-car-settings');
+    if (savedSettings) {
+        settings = savedSettings;
+    } else {
+        localStorage.setItem('hf-car-settings', settings);
+    }
+
+    if (settings === 'old') {
+        GM_registerMenuCommand('Adapt to new car names', adaptToNewCars);
+    } else {
+        GM_registerMenuCommand('Revert to old car names', revertToOldCars);
+    }
 
     // When set to true, it will show you what the script entails
     let showExplanation = 'true';
@@ -68,7 +84,7 @@
     let loggedTitleElements = new Set();
 
     // Default Class A Car Templates as chosen by most racing guides
-    let carTemplates = [
+    let oldCarTemplates = [
         { name: 'Mudpit: Sierra Cosworth DS3', noteRecogniser: 'DS3' },
         { name: 'Two Islands: Honda NSX DL2', noteRecogniser: 'DL2' },
         { name: 'Parkland: Honda NSX DS3', noteRecogniser: 'DS3' },
@@ -86,6 +102,31 @@
         { name: 'Docks: Ford GT40 TS3', noteRecogniser: 'TS3' },
         { name: 'Convict: Mercedes SLR TL3', noteRecogniser: 'TL3' },
     ];
+
+    let newCarTemplates = [
+        { name: 'Mudpit: Colina Tanprice DS3', noteRecogniser: 'DS3' },
+        { name: 'Two Islands: Edomondo NSX DL2', noteRecogniser: 'DL2' },
+        { name: 'Parkland: Edomondo NSX DS3', noteRecogniser: 'DS3' },
+        { name: 'Hammerhead: Edomondo NSX DS2', noteRecogniser: 'DS2' },
+        { name: 'Stone Park: Echo R8 DS3', noteRecogniser: 'DS3' },
+        { name: 'Withdrawal: Veloria LFA TL3', noteRecogniser: 'TL3' },
+        { name: 'Speedway: Veloria LFA TL3', noteRecogniser: 'TL3' },
+        { name: 'Uptown: Veloria LFA TL3', noteRecogniser: 'TL3' },
+        { name: 'Underdog: Edomondo NSX TS2', noteRecogniser: 'TS2' },
+        { name: 'Commerce: Edomondo NSX TS2', noteRecogniser: 'TS2' },
+        { name: 'Sewage: Edomondo NSX TS2', noteRecogniser: 'TS2' },
+        { name: 'Industrial: Edomondo NSX TS3', noteRecogniser: 'TS3' },
+        { name: 'Vector: Edomondo NSX TS3', noteRecogniser: 'TS3' },
+        { name: 'Meltdown: Edomondo NSX TS3', noteRecogniser: 'TS3' },
+        { name: 'Docks: Volt GT TS3', noteRecogniser: 'TS3' },
+        { name: 'Convict: Mercia SLR TL3', noteRecogniser: 'TL3' },
+    ];
+
+    let carTemplates = newCarTemplates;
+
+    if (settings === 'old') {
+        carTemplates = oldCarTemplates;
+    }
 
     // If the user already has their own templates, set those instead
     let storedCarTemplates = JSON.parse(localStorage.getItem('carTemplates'));
@@ -141,7 +182,7 @@
     ];
 
     // All available cars on Torn
-    let carNames = [
+    let oldCarNames = [
         'Alfa Romeo 156',
         'Aston Martin One-77',
         'Audi R8',
@@ -193,6 +234,65 @@
         'Volkswagen Golf GTI',
         'Volvo 850'
     ];
+
+    // Car names after the change
+    let newCarNames = [
+        'Mercia SLR',
+        'Veloria LFA',
+        'Weston Marlin 177',
+        'Lambrini Torobravo',
+        'Volt GT',
+        'Edomondo NSX',
+        'Zaibatsu GT-R',
+        'Lolo 458',
+        'Echo R8',
+        'Volt MNG',
+        'Bavaria M5',
+        'Dart Rampager',
+        'Echo S4',
+        'Wington GGU ',
+        'Tsubasa Impressor',
+        'Yotsuhada EVX',
+        'Colina Tanprice',
+        'Cosmos EX',
+        'Chevalier CZ06',
+        'Oceania SS',
+        'Knight Firebrand',
+        'Sturmfahrt 111',
+        'Edomondo S2',
+        'Volt RS',
+        'Bavaria Z8',
+        'Edomondo IR',
+        'Bedford Nova',
+        'Echo S3',
+        'Nano Cavalier',
+        'Echo Quadrato',
+        'Tabata RM2',
+        'Chevalier CVR',
+        'Edomondo ACD',
+        'Bavaria X5',
+        'Alpha Milano 156',
+        'Invader H3',
+        'Coche Basurero',
+        'Edomondo Localé',
+        'Verpestung Insecta',
+        'Papani Colé',
+        'Stålhög 860',
+        'Verpestung Sport',
+        'Zaibatsu Macro',
+        'Çagoutte 10-6',
+        'Nano Pioneer',
+        'Trident',
+        'Vita Bravo',
+        'Limoen Saxon',
+        'Bedford Racer',
+    ];
+
+    let carNames = newCarNames;
+
+    if (settings === 'old') {
+        carNames = oldCarNames;
+    }
 
     // If the message element is there, add the necessary things to it
     function observeMessageElement() {
@@ -1701,6 +1801,102 @@
                 }
             }
         }
+    }
+
+    let carChanges = {
+        'Mitsubishi Evo X': 'Yotsuhada EVX',
+        'Volvo 850': 'Stålhög 860',
+        'Alfa Romeo 156': 'Alpha Milano 156',
+        'BMW X5': 'Bavaria X5',
+        'Seat Leon Cupra': 'Coche Basurero',
+        'Vauxhall Astra GSI': 'Bedford Nova',
+        'Volkswagen Golf GTI': 'Verpestung Sport',
+        'Audi S3': 'Echo S3',
+        'Ford Focus RS': 'Volt RS',
+        'Honda s2': 'Edomondo S2',
+        'Mini Cooper S': 'Nano Cavalier',
+        'Sierra Cosworth': 'Colina Tanprice',
+        'Lotus Exige': 'Cosmos EX',
+        'Vauxhall Corsa': 'Bedford Racer',
+        'Porsche 911 GT3': 'Sturmfahrt 111',
+        'Subaru Impreza STI': 'Tsubasa Impressor',
+        'TVR Sagaris': 'Wington GGU',
+        'Aston Martin One-77': 'Weston Marlin 177',
+        'Audi R8': 'Echo R8',
+        'Bugatti Veyron': 'Stormatti Casteon',
+        'Ferrari 458': 'Lolo 458',
+        'Lamborghini Gallardo': 'Lambrini Torobravo',
+        'Lexus LFA': 'Veloria LFA',
+        'Mercedes SLR': 'Mercia SLR',
+        'Nissan GT-R': 'Zaibatsu GT-R',
+        'Honda Civic': 'Edomondo Localé',
+        'Honda NSX': 'Edomondo NSX',
+        'Audi TT Quattro': 'Echo Quadrato',
+        'BMW M5': 'Bavaria M5',
+        'BMW Z8': 'Bavaria Z8',
+        'Chevrolet Corvette Z06': 'Chevalier CZ06',
+        'Dodge Charger': 'Dart Rampager',
+        'Pontiac Firebird': 'Knight Firebrand',
+        'Ford GT': 'Volt GT',
+        'Hummer H3': 'Invader H3',
+        'Audi S4': 'Echo S4',
+        'Honda Integra R': 'Edomondo IR',
+        'Honda Accord': 'Edomondo ACD',
+        'Toyota MR2': 'Tabata RM2',
+        'Volkswagen Beetle': 'Verpestung Insecta',
+        'Chevrolet Cavalier': 'Chevalier CVR',
+        'Ford Mustang': 'Volt MNG',
+        'Reliant Robin': 'Trident',
+        'Holden SS': 'Oceania SS',
+        'Citroen Saxo': 'Limoen Saxon',
+        'Classic Mini': 'Nano Pioneer',
+        'Fiat Punto': 'Vita Bravo',
+        'Nissan Micra': 'Zaibatsu Macro',
+        'Peugeot 106': 'Çagoutte 10-6',
+        'Renault Clio': 'Papani Colé',
+    };
+
+    // Function to replace one set of car names with another set in the templates
+    function updateCarNames(oldName, newName) {
+        let matchingTemplates = carTemplates.filter(template => {
+            let templateName = template.name.toLowerCase();
+            let searchTerm = oldName.toLowerCase();
+            return templateName.includes(searchTerm);
+        });
+
+        matchingTemplates.forEach(template => {
+            template.name = template.name.replace(oldName, newName);
+        });
+    }
+
+    function adaptToNewCars() {
+        settings = 'new';
+        localStorage.setItem('hf-car-settings', settings);
+
+        Object.entries(carChanges).forEach(([oldName, newName]) => {
+            updateCarNames(oldName, newName);
+        });
+
+        carTemplates.sort(); // Order alphabetically for easiness
+
+        localStorage.setItem('carTemplates', JSON.stringify(carTemplates)); // Set the default templates in storage
+
+        location.reload();
+    }
+
+    function revertToOldCars() {
+        settings = 'old';
+        localStorage.setItem('hf-car-settings', settings);
+
+        Object.entries(carChanges).forEach(([oldName, newName]) => {
+            updateCarNames(newName, oldName);
+        });
+
+        carTemplates.sort(); // Order alphabetically for easiness
+
+        localStorage.setItem('carTemplates', JSON.stringify(carTemplates)); // Set the default templates in storage
+
+        location.reload();
     }
 
 })();
