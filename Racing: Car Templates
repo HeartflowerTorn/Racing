@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Racing: Car Templates
 // @namespace    heartflower.torn.com
-// @version      1.3.2
+// @version      1.3.3
 // @description  Highlights cars and upgrades based on templates
 // @author       Heartflower [2626587]
 // @match        https://www.torn.com/page.php?sid=racing*
@@ -1883,6 +1883,10 @@
         localStorage.setItem('hf-car-settings', settings);
 
         Object.entries(carChanges).forEach(([oldName, newName]) => {
+            if (oldName === 'Volt GT40') {
+                oldName = 'Volt GT';
+            }
+
             updateCarNames(newName, oldName);
         });
 
@@ -1923,5 +1927,6 @@
     if (showAdaptRevert === true) {
         addAdaptRevert();
     }
+
 
 })();
